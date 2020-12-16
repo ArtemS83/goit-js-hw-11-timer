@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./index.js"],"names":["console","log"],"mappings":"kHAAA,iBACAA,QAAQC,IAAI,mB","file":"main.cdfce288335ece7a8c13.js","sourcesContent":["import './styles.css';\nconsole.log('HW 11. taimer');\n"],"sourceRoot":""}

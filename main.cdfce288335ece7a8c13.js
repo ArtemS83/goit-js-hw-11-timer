@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{L1EO:function(n,o,i){},QfWi:function(n,o,i){"use strict";i.r(o);i("L1EO");console.log("HW 11. taimer")}},[["QfWi",1]]]);
+//# sourceMappingURL=main.cdfce288335ece7a8c13.js.map
