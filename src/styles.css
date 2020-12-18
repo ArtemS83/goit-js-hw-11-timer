@@ -18,7 +18,7 @@ body {
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 .title {
-  margin: 40px;
+  margin: 15px;
   color: blue;
 }
 .timer {

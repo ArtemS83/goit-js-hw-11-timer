@@ -1,153 +1,106 @@
 import './styles.css';
-// Плагин это класс CountdownTimer, экземпляр которого
-// создает новый таймер с настройками.
+// // //================================ON CLASS TIMER================================//
+class CountdownTimer {
+  constructor({ selector, targetDate }) {
+    this.selector = selector;
+    this.targetDate = targetDate;
+    this.idInterval = null;
 
-// new CountdownTimer({
-//   selector: '#timer-1',
-//   targetDate: new Date('Jun 01, 2022'),
-// });
-// const refs = {
-//   //   timerFace: document.querySelector('.title'),
-//   days: document.querySelector('span[data-value="days"]'),
-//   hours: document.querySelector('span[data-value="hours"]'),
-//   mins: document.querySelector('span[data-value="mins"]'),
-//   secs: document.querySelector('span[data-value="secs"]'),
-// };
+    this.init();
+  }
 
-// // //================================ON FUNCTION================================//
-// const refs = {
-//   days: document.querySelector('span[data-value="days"]'),
-//   hours: document.querySelector('span[data-value="hours"]'),
-//   mins: document.querySelector('span[data-value="mins"]'),
-//   secs: document.querySelector('span[data-value="secs"]'),
-// };
-// const targetDate = new Date('Jan 01, 2022');
-// // console.log(targetDate);
+  init() {
+    const currentDate = new Date();
+    const deltaTime = this.targetDate - currentDate;
+    if (deltaTime <= 0) {
+      this.finish();
+      return;
+    }
+    const timeUpdate = this.getTimeComponents(deltaTime);
+    this.updateTimer(timeUpdate);
+    this.start();
+  }
+  start() {
+    this.idInterval = setInterval(() => {
+      const currentDate = new Date();
+      const deltaTime = this.targetDate - currentDate;
+      if (deltaTime <= 0) {
+        this.finish();
+        return;
+      }
+      const timeUpdate = this.getTimeComponents(deltaTime);
+      this.updateTimer(timeUpdate);
+    }, 1000);
+  }
 
-// let idInterval = null;
-// let deltaTime;
-// let currentDate;
-// currentDate = new Date();
-// // currentDate = new Date('Jan 01, 2022'); //для проверки
-// // currentDate = new Date('Jan 01, 2025'); //для проверки
-// // console.log(currentDate);
-// deltaTime = targetDate - currentDate;
-// // console.log(time);
+  updateTimer({ days, hours, mins, secs }) {
+    const timerRef = document.querySelector(this.selector);
+    const daysRef = timerRef.querySelector('span[data-value="days"]');
+    const hoursRef = timerRef.querySelector('span[data-value="hours"]');
+    const minsRef = timerRef.querySelector('span[data-value="mins"]');
+    const secsRef = timerRef.querySelector('span[data-value="secs"]');
 
-// function timerStart() {
-//   if (deltaTime <= 0) {
-//     console.log('End now');
-//     finishedTimer();
-//     return;
-//   }
-//   //   timerChecker(time);
-//   // const time = getTimeComponents(0);
-//   const timeUpdate = getTimeComponents(deltaTime);
-//   updateTimer(timeUpdate);
-//   // updateTimer();
+    daysRef.textContent = days;
+    hoursRef.textContent = hours;
+    minsRef.textContent = mins;
+    secsRef.textContent = secs;
+  }
 
-//   idInterval = setInterval(() => {
-//     if (deltaTime <= 0) {
-//       console.log('End time');
-//       finishedTimer();
-//       return;
-//     }
-//     // timerChecker(time);
-//     currentDate = new Date();
-//     currentDate = new Date('Jan 01, 2022'); //для проверки
+  finish() {
+    clearInterval(this.idInterval);
+    const timeUpdate = this.getTimeComponents(0);
+    this.updateTimer(timeUpdate);
+  }
 
-//     deltaTime = targetDate - currentDate;
-//     // console.log(currentDate);
-//     // timerChecker(time);
-//     const timeUpdate = getTimeComponents(deltaTime);
-//     updateTimer(timeUpdate);
-//     // getTimeComponents(time);
-//     // updateTimer({ days, hours, mins, secs });
-//     // updateTimer();
-//   }, 1000);
-// }
+  getTimeComponents(time) {
+    const days = this.pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+    const hours = this.pad(
+      Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+    );
+    const mins = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+    const secs = this.pad(Math.floor((time % (1000 * 60)) / 1000));
+    return { days, hours, mins, secs };
+  }
 
-// timerStart();
+  pad(value) {
+    return String(value).padStart(2, '0');
+  }
+}
+//============================= Let's Go! ===========//
 
-// // Для подсчета значений используй следующие готовые формулы,
-// // где time - разница между targetDate и текущей датой.
+const timerNY22 = new CountdownTimer({
+  selector: '#timer-1',
+  targetDate: new Date('Jan 01, 2022'),
+});
 
-// /*
-//  * Принимает число, приводит к строке и добавляет в начало 0 если число меньше 2-х знаков
-//  */
-// function pad(value) {
-//   return String(value).padStart(2, '0');
-// }
-// function getTimeComponents(time) {
-//   const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
-//   const hours = pad(
-//     Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-//   );
-//   const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-//   const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
-//   return { days, hours, mins, secs };
-// }
-// function updateTimer({ days, hours, mins, secs }) {
-//   //   currentDate = new Date();
-//   //   const currentDate = new Date('Jan 01, 2022'); //для проверки
-//   //   time = targetDate - currentDate;
+// //================================ON FUNCTION TIMER f================================//
 
-//   // const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
-//   // const hours = pad(
-//   //   Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-//   // );
-//   // const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-//   // const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
-//   refs.days.textContent = days;
-//   refs.hours.textContent = hours;
-//   refs.mins.textContent = mins;
-//   refs.secs.textContent = secs;
-// }
-// // function timerChecker(t) {
-// //   if (t <= 0) {
-// //     console.log('End now');
-// //     finishedTimer();
-// //     // return;
-// //   }
-// // }
-// function finishedTimer() {
-//   clearInterval(idInterval);
-//   const timeUpdate = getTimeComponents(0);
-//   updateTimer(timeUpdate);
-//   // updateTimer(0);
-//   // refs.days.textContent = '00';
-//   // refs.hours.textContent = '00';
-//   // refs.mins.textContent = '00';
-//   // refs.secs.textContent = '00';
-//   console.log('finishedTimer');
-// }
-
-// //================================ON FUNCTION TIMER================================//
 const refs = {
-  days: document.querySelector('span[data-value="days"]'),
-  hours: document.querySelector('span[data-value="hours"]'),
-  mins: document.querySelector('span[data-value="mins"]'),
-  secs: document.querySelector('span[data-value="secs"]'),
+  daysf: document.querySelector('span[data-value="daysf"]'),
+  hoursf: document.querySelector('span[data-value="hoursf"]'),
+  minsf: document.querySelector('span[data-value="minsf"]'),
+  secsf: document.querySelector('span[data-value="secsf"]'),
 };
-const targetDate = new Date('Jan 01, 2022');
-let idInterval = null;
+const targetDatef = new Date('Jan 01, 2021');
+let idIntervalf = null;
+
 timerStart();
 
 function timerStart() {
   const currentDate = new Date();
-  // const currentDate = new Date('Jan 01, 2022'); //для проверки,если таймер запущен точно в окончание времени
+  // const currentDate = new Date('Jan 01, 2021'); //для проверки,если таймер запущен точно в окончание времени
   // const currentDate = new Date('Jan 01, 2025'); //для проверки,если таймер запущен после окончания времени
-  const deltaTime = targetDate - currentDate;
+  const deltaTime = targetDatef - currentDate;
   if (deltaTime <= 0) {
     finishedTimer();
     return;
   }
   const timeUpdate = getTimeComponents(deltaTime);
   updateTimer(timeUpdate);
-  idInterval = setInterval(() => {
+  idIntervalf = setInterval(() => {
     const currentDate = new Date();
-    // const currentDate = new Date('Jan 01, 2022'); //для проверки ("имитация за секунду до окончания")
-    const deltaTime = targetDate - currentDate;
+    // const currentDate = new Date('Jan 01, 2021'); //для проверки ("имитация за секунду до окончания")
+    const deltaTime = targetDatef - currentDate;
     if (deltaTime <= 0) {
       finishedTimer();
       return;
@@ -158,26 +111,26 @@ function timerStart() {
 }
 
 function finishedTimer() {
-  clearInterval(idInterval);
+  clearInterval(idIntervalf);
   const timeUpdate = getTimeComponents(0);
   updateTimer(timeUpdate);
 }
 
-function updateTimer({ days, hours, mins, secs }) {
-  refs.days.textContent = days;
-  refs.hours.textContent = hours;
-  refs.mins.textContent = mins;
-  refs.secs.textContent = secs;
+function updateTimer({ daysf, hoursf, minsf, secsf }) {
+  refs.daysf.textContent = daysf;
+  refs.hoursf.textContent = hoursf;
+  refs.minsf.textContent = minsf;
+  refs.secsf.textContent = secsf;
 }
 
 function getTimeComponents(time) {
-  const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
-  const hours = pad(
+  const daysf = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+  const hoursf = pad(
     Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
   );
-  const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-  const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
-  return { days, hours, mins, secs };
+  const minsf = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+  const secsf = pad(Math.floor((time % (1000 * 60)) / 1000));
+  return { daysf, hoursf, minsf, secsf };
 }
 
 function pad(value) {
